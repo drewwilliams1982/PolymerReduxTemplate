@@ -1,0 +1,104 @@
+<link rel="import" href="/src/redux-store.html" />
+<link rel="import" href="/bower_components/polymer-redux/polymer-redux.html">
+
+<dom-module id="my-component">
+  <template>
+    <style>
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      div.container{
+            width: 500px;
+            height: 500px;
+            background-color: red;
+            border: 1px black solid;
+        }
+
+        div.slider{
+            width: 30px;
+            height: 10px;
+            background-color: blue;
+            border: 1px black solid;
+            cursor: move;
+            position: relative;
+            left: 0;
+            top: 20px;
+        }
+    </style>
+
+    <div id="container" class="container">
+        <div class="slider" style="left: [[position]]px;"></div>
+    </div>
+  </template>
+
+  <script>
+    class MyComponent extends ReduxMixin(Polymer.Element){
+        static get is() {
+            return 'my-component';
+        }
+
+        static get config() {
+            return {
+                properties:{
+                    position:{
+                        type: Number,
+                        statePath: 'position'
+                    }
+                },
+                actions: {
+                    move: function(delta){
+                        return {
+                            type: 'CHANGE_POSITION',
+                            delta: delta
+                        };
+                    }
+                }
+            }
+        }
+        
+        
+
+        connectedCallback() {
+            super.connectedCallback();
+            //const state = this.getState();
+
+            var that = this;
+            //var slider = document.getElementsByClassName('slider')[0];
+            var container = this.$.container;
+            var slider = container.firstElementChild;
+
+            var moving = false;
+            var mousex, mousey;
+            var sliderleft = 0;
+
+            slider.addEventListener('mousedown', function(e){
+                moving = true;
+            });
+
+            document.addEventListener('mouseup', function(e){
+                moving = false;
+            });
+
+            container.addEventListener('mousemove', function(e){
+                if(moving && e.movementX !== 0){
+                    that.dispatch('move', e.movementX);
+
+                    // var calcx = sliderleft;
+                    // if(calcx + slider.clientWidth >= container.clientWidth){
+                    //     calcx = container.clientWidth - slider.clientWidth - 1;
+                    // }
+                    // if( calcx < 0){
+                    //     calcx = 0;
+                    // }
+                    // slider.style.left = calcx + "px";
+                }
+            });
+        }
+    }
+
+    customElements.define(MyComponent.is, MyComponent);
+  </script>
+</dom-module>

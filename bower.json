@@ -1,0 +1,21 @@
+{
+  "name": "slidey",
+  "description": "0.0.1",
+  "main": "index.html",
+  "authors": [
+    "Andrew Williams <andrew.williams@isams.co.uk>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer-redux": "polymer-2"
+  },
+  "devDependencies": {}
+}

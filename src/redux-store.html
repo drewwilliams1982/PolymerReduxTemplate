@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+
+<script>
+
+    /*
+    *   Note: Object.assign is used here directly as it is defined 
+    *   in elements/scripts/extensions/extensions.Object.js
+    *   However this may/should be removed. 
+    *   We should provide support for ES6 as part of the 
+    *   build process and transpile to ES5 to support IE11.
+    */
+
+    var initialState = {
+        debug: false,
+        position: 0
+    }
+
+    var reducer = function(state, action) {
+        if(!state) return initialState;
+        switch(action.type) {
+            case 'CHANGE_POSITION':
+                return positionChanged(state, action);
+            default:
+                return state;
+        }
+    }
+
+    function positionChanged(state, action) {
+        return Object.assign({}, state, { position: state.position + action.delta });
+    }
+
+    var store = Redux.createStore(reducer,/*preloadedState,*/
+    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    var ReduxMixin = PolymerRedux(store);
+</script>
